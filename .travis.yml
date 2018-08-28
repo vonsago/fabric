@@ -69,8 +69,6 @@ script:
   # Again, but as 'fabric2'
   - rm -rf tmp
   - pip uninstall -y fabric
-  # For the from_v1 sanity test below.
-  - "pip install 'fabric<2'"
   # Regular test of installation as fabric2, which is ALSO necessary for the
   # sanity test...
   - "PACKAGE_AS_FABRIC2=yes inv travis.test-packaging --package=fabric2 --sanity=\"fab2 --version\""

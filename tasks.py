@@ -61,15 +61,24 @@ def publish(
 def sanity_test_from_v1(c):
     """
     Run some very quick in-process sanity tests on a dual fabric1-v-2 env.
+
+    Assumes Fabric 2+ is already installed as 'fabric2'.
     """
-    # Assumes Fabric 1 installed as 'fabric', Fabric 2 installed as 'fabric2'
+    # This cannot, by definition, work under Python 3 as Fabric 1 is not Python
+    # 3 compatible.
+    if environ.get("TRAVIS_PYTHON_VERSION", "").startswith("3"):
+        return
+    from invoke import run  # for its own sake
+
+    run("pip install 'fabric<2'")
     from fabric.api import env
     from fabric2 import Connection
 
     env.gateway = "some-gateway"
     env.no_agent = True
     env.password = "sikrit"
-    env.host_string = "admin@localghost"
+    env.user = "admin"
+    env.host_string = "localghost"
     env.port = "2222"
     cxn = Connection.from_v1(env)
     config = cxn.config
