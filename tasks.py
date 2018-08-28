@@ -8,7 +8,7 @@ from invocations.pytest import test, integration, coverage
 from invocations.packaging import release
 from invocations.util import tmpdir
 
-from invoke import Collection, task
+from invoke import Collection, task, run
 from invoke.util import LOG_FORMAT
 
 
@@ -68,10 +68,15 @@ def sanity_test_from_v1(c):
     # 3 compatible.
     if environ.get("TRAVIS_PYTHON_VERSION", "").startswith("3"):
         return
-    from invoke import run  # for its own sake
-
     run("pip install 'fabric<2'")
-    from fabric.api import env
+    run("pip list | grep -i fab")
+    try:
+        from fabric.api import env
+    except ImportError:
+        import fabric
+
+        print("Fabric was: {!r}".format(fabric))
+        raise
     from fabric2 import Connection
 
     env.gateway = "some-gateway"
