@@ -100,6 +100,7 @@ ns = Collection(
     travis,
     watch_docs,
     www,
+    sanity_test_from_v1,
 )
 ns.configure(
     {
