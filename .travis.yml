@@ -70,8 +70,8 @@ script:
   - rm -rf tmp
   - pip uninstall -y fabric
   - "PACKAGE_AS_FABRIC2=yes inv travis.test-packaging --package=fabric2 --sanity=\"fab2 --version\""
-  # Special case integration-esque test that requires exactly this package
-  # environment (fabric 1 + 2 side by side)
+  # Special case integration-esque test that requires fabric 1 + 2 side by side
+  - "pip install 'fabric<2'"
   - inv sanity-test-from-v1
 after_success:
   # Upload coverage data to codecov
